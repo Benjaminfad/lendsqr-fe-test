@@ -1,0 +1,36 @@
+@use '../../styles/variables' as v;
+@use '../../styles/mixins' as m;
+
+.stat-card {
+  background-color: white;
+  border-radius: 4px;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+  
+  &-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+    
+    svg {
+      color: white;
+    }
+  }
+  
+  &-title {
+    font-size: 14px;
+    color: v.$text-color;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  
+  &-value {
+    font-size: 24px;
+    font-weight: 600;
+    color: v.$secondary-color;
+  }
+}

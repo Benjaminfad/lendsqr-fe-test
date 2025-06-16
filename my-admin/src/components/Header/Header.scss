@@ -1,0 +1,176 @@
+@use '../../styles/variables' as v;
+@use '../../styles/mixins' as m;
+
+.header {
+  background-color: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  
+  &-container {
+    @include m.flex(row, space-between, center);
+    padding: 15px 30px;
+    
+    @include m.responsive(tablet) {
+      padding: 15px 20px;
+    }
+    
+    @include m.responsive(mobile) {
+      padding: 15px;
+    }
+  }
+  
+  &-logo {
+    img {
+      height: 30px;
+      
+      @include m.responsive(mobile) {
+        height: 24px;
+      }
+    }
+  }
+  
+  &-search {
+    @include m.flex(row, center, center);
+    max-width: 400px;
+    width: 100%;
+    margin: 0 20px;
+    position: relative;
+    
+    @include m.responsive(tablet) {
+      display: none;
+    }
+    
+    input {
+      width: 100%;
+      padding: 10px 15px;
+      border: 1px solid v.$border-color;
+      border-radius: 8px;
+      font-size: 14px;
+      
+      &:focus {
+        outline: none;
+        border-color: v.$primary-color;
+      }
+    }
+    
+    .search-button {
+      position: absolute;
+      right: 0;
+      top: 0;
+      height: 100%;
+      width: 50px;
+      background-color: v.$primary-color;
+      border-radius: 0 8px 8px 0;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+  
+  &-actions {
+    @include m.flex(row, flex-end, center);
+    gap: 20px;
+    
+    @include m.responsive(tablet) {
+      display: none;
+    }
+    
+    .docs-link {
+      color: v.$secondary-color;
+      text-decoration: underline;
+      font-size: 14px;
+    }
+    
+    .notification-button {
+      color: v.$secondary-color;
+      position: relative;
+      
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 8px;
+        height: 8px;
+        background-color: v.$danger-color;
+        border-radius: 50%;
+      }
+    }
+    
+    .user-profile {
+      @include m.flex(row, center, center);
+      gap: 10px;
+      
+      img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+      
+      span {
+        color: v.$secondary-color;
+        font-weight: 500;
+      }
+    }
+  }
+  
+  .mobile-menu-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 24px;
+    height: 18px;
+    
+    @include m.responsive(tablet) {
+      display: flex;
+    }
+    
+    span {
+      height: 2px;
+      width: 100%;
+      background-color: v.$secondary-color;
+      border-radius: 2px;
+    }
+  }
+  
+  .mobile-menu {
+    display: none;
+    padding: 15px;
+    background-color: white;
+    border-top: 1px solid v.$border-color;
+    
+    @include m.responsive(tablet) {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    
+    &-item {
+      padding: 10px 0;
+      
+      &.notification, &.profile {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      
+      &.profile img {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+       &.logout {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        gap: 10px;
+        color: v.$danger-color;
+      }
+    }
+  }
+}

@@ -1,0 +1,28 @@
+@use '../../styles/variables' as v;
+@use '../../styles/mixins' as m;
+
+.layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  
+  &-container {
+    display: flex;
+    flex: 1;
+  }
+  
+  .main-content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    
+    @include m.responsive(tablet) {
+      padding: 15px;
+    }
+    
+    @include m.responsive(mobile) {
+      padding: 10px;
+    }
+  }
+}
+
