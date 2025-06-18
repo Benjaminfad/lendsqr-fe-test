@@ -86,6 +86,9 @@ npm run dev
 
 4. Visit [http://localhost:5173](http://localhost:5173) to view the app locally.
 
+5. LOGIN CREDENTIALS TO ADMIN : 
+   EMAIL : admin@demo.com
+   PASSWORD : admin123
 
 
-Feel free to contribute or fork this for your own admin dashboard projects!
+
