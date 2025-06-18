@@ -1,80 +1,86 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { Link, useParams, useNavigate } from "react-router-dom"
-import { ArrowLeft, Star } from "react-feather"
-import { getUserById } from "../../services/user"
-import type { UserDetails as UserDetailsType , UserStatus } from "../../types/users"
-import "./UserDetails.scss"
+import { useState, useEffect } from "react";
+import { Link, useParams, useNavigate } from "react-router-dom";
+import { ArrowLeft, Star } from "react-feather";
+import { getUserById } from "../../services/user";
+import type {
+  UserDetails as UserDetailsType,
+  UserStatus,
+} from "../../types/users";
+import "./UserDetails.scss";
+import Loading from "../../components/Loading/Loading";
 
 const UserDetails = () => {
-  const { id } = useParams<{ id: string }>()
-  const navigate = useNavigate()
-  const [activeTab, setActiveTab] = useState("general")
-  const [user, setUser] = useState<UserDetailsType | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState("")
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState("general");
+  const [user, setUser] = useState<UserDetailsType | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchUserDetails = async () => {
-      if (!id) return
+      if (!id) return;
 
       try {
-        setLoading(true)
+        setLoading(true);
 
-        const cachedUser = localStorage.getItem(`user_${id}`)
+        const cachedUser = localStorage.getItem(`user_${id}`);
 
         if (cachedUser) {
-          setUser(JSON.parse(cachedUser))
-          setLoading(false)
+          setUser(JSON.parse(cachedUser));
+          setLoading(false);
         }
 
-        const userData = await getUserById(id)
+        const userData = await getUserById(id);
 
         if (userData) {
-          setUser(userData)
+          setUser(userData);
         } else if (!cachedUser) {
-          setError("User not found. Please check if the user ID is correct.")
+          setError("User not found. Please check if the user ID is correct.");
         }
       } catch (err) {
-        console.error("Error fetching user details:", err)
+        console.error("Error fetching user details:", err);
         if (!localStorage.getItem(`user_${id}`)) {
-          setError("Failed to load user details. Please try again later.")
+          setError("Failed to load user details. Please try again later.");
         }
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    fetchUserDetails()
-  }, [id])
+    fetchUserDetails();
+  }, [id]);
 
   const handleBlacklistUser = () => {
-    if (!user || !id) return
+    if (!user || !id) return;
 
     const updatedUser: UserDetailsType = {
       ...user,
       status: "Blacklisted" as UserStatus,
-    }
+    };
 
-    localStorage.setItem(`user_${id}`, JSON.stringify(updatedUser))
-    setUser(updatedUser)
-  }
+    localStorage.setItem(`user_${id}`, JSON.stringify(updatedUser));
+    setUser(updatedUser);
+  };
 
   const handleActivateUser = () => {
-    if (!user || !id) return
+    if (!user || !id) return;
 
     const updatedUser: UserDetailsType = {
       ...user,
       status: "Active" as UserStatus,
-    }
+    };
 
-    localStorage.setItem(`user_${id}`, JSON.stringify(updatedUser))
-    setUser(updatedUser)
-  }
+    localStorage.setItem(`user_${id}`, JSON.stringify(updatedUser));
+    setUser(updatedUser);
+  };
 
   if (loading) {
-    return <div className="loading-state">Loading user details...</div>
+    return (
+      <Loading message="Loading users..." />
+    );
   }
 
   if (error || !user) {
@@ -85,7 +91,7 @@ const UserDetails = () => {
           Back to Users
         </button>
       </div>
-    )
+    );
   }
 
   return (
@@ -120,7 +126,10 @@ const UserDetails = () => {
         <div className="user-profile-section">
           <div className="user-avatar">
             {user.avatar ? (
-              <img src={user.avatar || "/placeholder.svg"} alt={`${user.firstName} ${user.lastName}`} />
+              <img
+                src={user.avatar || "/placeholder.svg"}
+                alt={`${user.firstName} ${user.lastName}`}
+              />
             ) : (
               <div className="avatar-placeholder">
                 {user.firstName.charAt(0)}
@@ -157,7 +166,10 @@ const UserDetails = () => {
         </div>
 
         <div className="tabs">
-          <button className={`tab ${activeTab === "general" ? "active" : ""}`} onClick={() => setActiveTab("general")}>
+          <button
+            className={`tab ${activeTab === "general" ? "active" : ""}`}
+            onClick={() => setActiveTab("general")}
+          >
             General Details
           </button>
           <button
@@ -166,16 +178,28 @@ const UserDetails = () => {
           >
             Documents
           </button>
-          <button className={`tab ${activeTab === "bank" ? "active" : ""}`} onClick={() => setActiveTab("bank")}>
+          <button
+            className={`tab ${activeTab === "bank" ? "active" : ""}`}
+            onClick={() => setActiveTab("bank")}
+          >
             Bank Details
           </button>
-          <button className={`tab ${activeTab === "loans" ? "active" : ""}`} onClick={() => setActiveTab("loans")}>
+          <button
+            className={`tab ${activeTab === "loans" ? "active" : ""}`}
+            onClick={() => setActiveTab("loans")}
+          >
             Loans
           </button>
-          <button className={`tab ${activeTab === "savings" ? "active" : ""}`} onClick={() => setActiveTab("savings")}>
+          <button
+            className={`tab ${activeTab === "savings" ? "active" : ""}`}
+            onClick={() => setActiveTab("savings")}
+          >
             Savings
           </button>
-          <button className={`tab ${activeTab === "app" ? "active" : ""}`} onClick={() => setActiveTab("app")}>
+          <button
+            className={`tab ${activeTab === "app" ? "active" : ""}`}
+            onClick={() => setActiveTab("app")}
+          >
             App and System
           </button>
         </div>
@@ -305,7 +329,7 @@ const UserDetails = () => {
         )}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default UserDetails
+export default UserDetails;

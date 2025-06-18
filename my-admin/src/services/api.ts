@@ -1,8 +1,8 @@
 // API service for making HTTP requests
 export const API_URL = {
   LOGIN: "https://run.mocky.io/v3/cce633ca-e55e-4ebe-ab8a-34069abff347",
-  USERS: "https://run.mocky.io/v3/be23b2a7-0979-4731-aa74-3f3badbe53d2", // Mock API with 500 users
-  USER_DETAILS: "https://run.mocky.io/v3/03fef00b-3dfd-4144-acab-1e0f194ad6ec", // Mock API for user details
+  USERS: "https://run.mocky.io/v3/91cd7e47-8e11-4acf-884b-bcc72f8cf185", 
+  USER_DETAILS: "https://run.mocky.io/v3/03fef00b-3dfd-4144-acab-1e0f194ad6ec", 
 }
 
 export async function fetchData<T>(url: string): Promise<T> {

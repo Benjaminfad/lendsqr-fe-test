@@ -1,33 +1,33 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
-import { Link } from "react-router-dom"
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import {
   Users as UsersIcon,
-  UserCheck,
   FileText,
-  Briefcase,
   Filter,
   MoreVertical,
   Eye,
   UserX,
   UserPlus,
-} from "react-feather"
+} from "react-feather";
 import StatCard from "../../components/StatsCard/StatCard";
 import { getUsers } from "../../services/user";
-import type { User , UserStatus } from "../../types/users";
-import "./Users.scss"
-
+import type { User, UserStatus } from "../../types/users";
+import "./Users.scss";
+import Loading from "../../components/Loading/Loading";
+import { Database } from "lucide-react";
 
 const Users = () => {
-  const [users, setUsers] = useState<User[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState("")
-  const [showFilter, setShowFilter] = useState(false)
-  const [showActionMenu, setShowActionMenu] = useState<number | null>(null)
-  const [currentPage, setCurrentPage] = useState(1)
-  const [usersPerPage] = useState(10)
-  const [filteredUsers, setFilteredUsers] = useState<User[]>([])
+  const [users, setUsers] = useState<User[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [showFilter, setShowFilter] = useState(false);
+  const [showActionMenu, setShowActionMenu] = useState<number | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [usersPerPage, setUsersPerPage] = useState(10);
+  const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
+  const [activeFilter, setActiveFilter] = useState<string>("");
   const [filters, setFilters] = useState({
     organization: "",
     username: "",
@@ -35,70 +35,107 @@ const Users = () => {
     date: "",
     phoneNumber: "",
     status: "",
-  })
+  });
 
   useEffect(() => {
     const fetchUsersData = async () => {
       try {
-        setLoading(true)
-        const data = await getUsers()
-        setUsers(data)
-        setFilteredUsers(data)
+        setLoading(true);
+        const data = await getUsers();
+        setUsers(data);
+        setFilteredUsers(data);
       } catch (err) {
-        setError("Failed to load users. Please try again.")
-        console.error(err)
+        setError("Failed to load users. Please try again.");
+        console.error(err);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    fetchUsersData()
-  }, [])
+    fetchUsersData();
+  }, []);
 
   const toggleFilter = () => {
-    setShowFilter(!showFilter)
-  }
+    setShowFilter(!showFilter);
+  };
 
   const toggleActionMenu = (userId: number) => {
     if (showActionMenu === userId) {
-      setShowActionMenu(null)
+      setShowActionMenu(null);
     } else {
-      setShowActionMenu(userId)
+      setShowActionMenu(userId);
     }
-  }
+  };
 
-  const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target
-    setFilters((prev) => ({ ...prev, [name]: value }))
-  }
+  const handleFilterChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    const updatedFilters = { ...filters, [name]: value };
+    setFilters(updatedFilters);
+
+    // When a field gets a value, it becomes the active filter
+    if (value) {
+      setActiveFilter(name);
+    } else {
+      // If the current active filter is cleared, check if any other filters have values
+      if (activeFilter === name) {
+        const hasOtherActiveFilter = Object.entries(updatedFilters).find(
+          ([key, val]) => key !== name && val !== ""
+        );
+        setActiveFilter(hasOtherActiveFilter ? hasOtherActiveFilter[0] : "");
+      }
+    }
+  };
 
   const applyFilters = () => {
-    let result = [...users]
+    let result = [...users];
 
     if (filters.organization) {
-      result = result.filter((user) => user.organization.toLowerCase().includes(filters.organization.toLowerCase()))
+      result = result.filter((user) =>
+        user.organization
+          .toLowerCase()
+          .includes(filters.organization.toLowerCase())
+      );
     }
 
     if (filters.username) {
-      result = result.filter((user) => user.username.toLowerCase().includes(filters.username.toLowerCase()))
+      result = result.filter((user) =>
+        user.username.toLowerCase().includes(filters.username.toLowerCase())
+      );
     }
 
     if (filters.email) {
-      result = result.filter((user) => user.email.toLowerCase().includes(filters.email.toLowerCase()))
+      result = result.filter((user) =>
+        user.email.toLowerCase().includes(filters.email.toLowerCase())
+      );
     }
 
     if (filters.phoneNumber) {
-      result = result.filter((user) => user.phoneNumber.includes(filters.phoneNumber))
+      result = result.filter((user) =>
+        user.phoneNumber.includes(filters.phoneNumber)
+      );
     }
 
     if (filters.status) {
-      result = result.filter((user) => user.status.toLowerCase() === filters.status.toLowerCase())
+      result = result.filter(
+        (user) => user.status.toLowerCase() === filters.status.toLowerCase()
+      );
     }
 
-    setFilteredUsers(result)
-    setCurrentPage(1)
-    setShowFilter(false)
-  }
+    if (filters.date) {
+      result = result.filter((user) => {
+        const userDate = new Date(user.dateJoined);
+        const filterDate = new Date(filters.date);
+
+        return userDate.toDateString() === filterDate.toDateString();
+      });
+    }
+
+    setFilteredUsers(result);
+    setCurrentPage(1);
+    setShowFilter(false);
+  };
 
   const resetFilters = () => {
     setFilters({
@@ -108,40 +145,44 @@ const Users = () => {
       date: "",
       phoneNumber: "",
       status: "",
-    })
-    setFilteredUsers(users)
-    setShowFilter(false)
-  }
+    });
+    setActiveFilter("");
+    setFilteredUsers(users);
+    setShowFilter(false);
+  };
 
-  const getStatusClass  = (status: UserStatus): string => {
+  const getStatusClass = (status: UserStatus): string => {
     switch (status.toLowerCase()) {
       case "active":
-        return "status-active"
+        return "status-active";
       case "inactive":
-        return "status-inactive"
+        return "status-inactive";
       case "pending":
-        return "status-pending"
+        return "status-pending";
       case "blacklisted":
-        return "status-blacklisted"
+        return "status-blacklisted";
       default:
-        return ""
+        return "";
     }
-  }
+  };
 
   // Pagination
-  const indexOfLastUser = currentPage * usersPerPage
-  const indexOfFirstUser = indexOfLastUser - usersPerPage
-  const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser)
-  const totalPages = Math.ceil(filteredUsers.length / usersPerPage)
+  const indexOfLastUser = currentPage * usersPerPage;
+  const indexOfFirstUser = indexOfLastUser - usersPerPage;
+  const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
+  const totalPages = Math.ceil(filteredUsers.length / usersPerPage);
 
-  const paginate = (pageNumber: number) => setCurrentPage(pageNumber)
+  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+
+  const isFieldDisabled = (fieldName: string) => {
+    return activeFilter !== "" && activeFilter !== fieldName;
+  };
 
   if (loading) {
-    return <div className="loading">Loading users...</div>
+    return <Loading message="Loading users..." />;
   }
-
   if (error) {
-    return <div className="error">{error}</div>
+    return <div className="error">{error}</div>;
   }
 
   return (
@@ -150,22 +191,35 @@ const Users = () => {
 
       <div className="stats-grid">
         <StatCard
-          icon={<UsersIcon size={20} />}
+          icon={<UsersIcon size={20} color="#DF18FF"/>}
           title="Users"
           value={users.length.toLocaleString()}
-          iconBgColor="#DF18FF"
+          iconBgColor="rgba(223, 24, 255, 0.1)
+"
         />
 
         <StatCard
-          icon={<UserCheck size={20} />}
+          icon={<UsersIcon size={20} color="#5718FF" />}
           title="Active Users"
-          value={users.filter((u) => u.status.toLowerCase() === "active").length.toLocaleString()}
-          iconBgColor="#5718FF"
+          value={users
+            .filter((u) => u.status.toLowerCase() === "active")
+            .length.toLocaleString()}
+          iconBgColor="rgba(87, 24, 255, 0.1)"
         />
 
-        <StatCard icon={<FileText size={20} />} title="Users with Loans" value="12,453" iconBgColor="#F55F44" />
+        <StatCard
+          icon={<FileText size={20} color="#F55F44" />}
+          title="Users with Loans"
+          value={users.filter((u) => u.Loan).length.toLocaleString()}
+          iconBgColor="rgba(245, 95, 68, 0.1)"
+        />
 
-        <StatCard icon={<Briefcase size={20} />} title="Users with Savings" value="102,453" iconBgColor="#FF3366" />
+        <StatCard
+          icon={<Database size={20} color="#FF3366" />}
+          title="Users with Savings"
+          value={users.filter((u) => u.Savings).length.toLocaleString()}
+          iconBgColor="rgba(255, 51, 102, 0.1)"
+        />
       </div>
 
       <div className="users-table-container">
@@ -234,17 +288,25 @@ const Users = () => {
                     <td>{user.phoneNumber}</td>
                     <td>{user.dateJoined}</td>
                     <td>
-                      <span className={`status ${getStatusClass(user.status)}`}>{user.status}</span>
+                      <span className={`status ${getStatusClass(user.status)}`}>
+                        {user.status}
+                      </span>
                     </td>
                     <td className="actions-cell">
                       <div className="actions-container">
-                        <button className="action-button" onClick={() => toggleActionMenu(user.id)}>
+                        <button
+                          className="action-button"
+                          onClick={() => toggleActionMenu(user.id)}
+                        >
                           <MoreVertical size={16} />
                         </button>
 
                         {showActionMenu === user.id && (
                           <div className="action-menu">
-                            <Link to={`/users/${user.id}`} className="action-item">
+                            <Link
+                              to={`/users/${user.id}`}
+                              className="action-item"
+                            >
                               <Eye size={16} />
                               <span>View Details</span>
                             </Link>
@@ -277,10 +339,20 @@ const Users = () => {
           <div className="filter-form">
             <div className="form-group">
               <label>Organization</label>
-              <select name="organization" value={filters.organization} onChange={handleFilterChange}>
+              <select
+                name="organization"
+                value={filters.organization}
+                onChange={handleFilterChange}
+                disabled={isFieldDisabled("organization")}
+              >
                 <option value="">Select</option>
                 <option value="lendsqr">Lendsqr</option>
-                <option value="irorun">Irorun</option>
+                <option value="TeamApt">TeamApt</option>
+                <option value="Carbon">Carbon</option>
+                <option value="Flutterwave">Flutterwave</option>
+                <option value="Kuda">Kuda</option>
+                <option value="Paystack">Paystack</option>
+                <option value="Moniepoint">Moniepoint</option>
               </select>
             </div>
 
@@ -292,6 +364,7 @@ const Users = () => {
                 name="username"
                 value={filters.username}
                 onChange={handleFilterChange}
+                disabled={isFieldDisabled("username")}
               />
             </div>
 
@@ -303,12 +376,19 @@ const Users = () => {
                 name="email"
                 value={filters.email}
                 onChange={handleFilterChange}
+                disabled={isFieldDisabled("email")}
               />
             </div>
 
             <div className="form-group">
               <label>Date</label>
-              <input type="date" name="date" value={filters.date} onChange={handleFilterChange} />
+              <input
+                type="date"
+                name="date"
+                value={filters.date}
+                onChange={handleFilterChange}
+                disabled={isFieldDisabled("date")}
+              />
             </div>
 
             <div className="form-group">
@@ -319,12 +399,18 @@ const Users = () => {
                 name="phoneNumber"
                 value={filters.phoneNumber}
                 onChange={handleFilterChange}
+                disabled={isFieldDisabled("phoneNumber")}
               />
             </div>
 
             <div className="form-group">
               <label>Status</label>
-              <select name="status" value={filters.status} onChange={handleFilterChange}>
+              <select
+                name="status"
+                value={filters.status}
+                onChange={handleFilterChange}
+                disabled={isFieldDisabled("status")}
+              >
                 <option value="">Select</option>
                 <option value="active">Active</option>
                 <option value="inactive">Inactive</option>
@@ -350,8 +436,9 @@ const Users = () => {
             <select
               value={usersPerPage}
               onChange={(e) => {
-                const newValue = Number.parseInt(e.target.value)
-                setCurrentPage(1)
+                const newValue = Number.parseInt(e.target.value);
+                setUsersPerPage(newValue);
+                setCurrentPage(1);
               }}
             >
               <option value="10">10</option>
@@ -373,32 +460,37 @@ const Users = () => {
 
             {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
               // Show pages around current page
-              let pageNum
+              let pageNum;
               if (totalPages <= 5) {
-                pageNum = i + 1
+                pageNum = i + 1;
               } else if (currentPage <= 3) {
-                pageNum = i + 1
+                pageNum = i + 1;
               } else if (currentPage >= totalPages - 2) {
-                pageNum = totalPages - 4 + i
+                pageNum = totalPages - 4 + i;
               } else {
-                pageNum = currentPage - 2 + i
+                pageNum = currentPage - 2 + i;
               }
 
               return (
                 <button
                   key={pageNum}
-                  className={`page-number ${currentPage === pageNum ? "active" : ""}`}
+                  className={`page-number ${
+                    currentPage === pageNum ? "active" : ""
+                  }`}
                   onClick={() => paginate(pageNum)}
                 >
                   {pageNum}
                 </button>
-              )
+              );
             })}
 
             {totalPages > 5 && currentPage < totalPages - 2 && (
               <>
                 <span>...</span>
-                <button className="page-number" onClick={() => paginate(totalPages)}>
+                <button
+                  className="page-number"
+                  onClick={() => paginate(totalPages)}
+                >
                   {totalPages}
                 </button>
               </>
@@ -406,7 +498,9 @@ const Users = () => {
 
             <button
               className="page-arrow next"
-              onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+              onClick={() =>
+                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+              }
               disabled={currentPage === totalPages}
             >
               &gt;
@@ -415,8 +509,7 @@ const Users = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-
-export default Users
+export default Users;

@@ -3,6 +3,7 @@
 import type React from "react"
 import { createContext, useContext, useState, useEffect, type ReactNode } from "react"
 import { login as loginService, logout as logoutService, isAuthenticated, getCurrentUser } from "../services/auth"
+import toast from "react-hot-toast"
 import type { LoginCredentials, LoginResponse } from "../services/auth"
 
 interface AuthContextType {
@@ -34,6 +35,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       if (response.status && response.data) {
         setIsLoggedIn(true)
         setUser(response.data)
+          toast.success("Login successful! Welcome back.", {
+          duration: 4000,
+          position: "top-right",
+        })
       }
       setLoading(false)
       return response
@@ -47,6 +52,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     logoutService()
     setIsLoggedIn(false)
     setUser(null)
+     toast.success("You have been logged out successfully.", {
+      duration: 3000,
+      position: "top-right",
+    })
   }
 
   return <AuthContext.Provider value={{ isLoggedIn, user, login, logout, loading }}>{children}</AuthContext.Provider>

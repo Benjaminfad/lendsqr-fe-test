@@ -20,6 +20,12 @@
   }
 }
 
+@mixin custom-responsive($max-width) {
+  @media (max-width: #{$max-width}px) {
+    @content;
+  }
+}
+
 @mixin flex($direction: row, $justify: flex-start, $align: stretch, $wrap: nowrap) {
   display: flex;
   flex-direction: $direction;

@@ -1,4 +1,5 @@
 import {  Routes, Route } from "react-router-dom"
+import { Toaster } from "react-hot-toast";
 import Login from "./pages/Auth/Login";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Users from "./pages/Users/Users";
@@ -21,7 +22,9 @@ function Routing() {
         </Route>
         </Route>
       </Routes>
-          </AuthProvider>
+       <Toaster
+      />
+      </AuthProvider>
 
   )
 }

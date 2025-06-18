@@ -2,6 +2,14 @@
 @use '../../styles/mixins' as m;
 
 .user-details-page {
+   padding: 3rem;
+       
+    @include m.responsive(tablet) {
+     padding: 0;
+    }
+      @include m.responsive(desktop) {
+     padding: 0;
+    }
   .back-link {
     display: flex;
     align-items: center;
@@ -51,11 +59,11 @@
       }
       
       .btn-success {
-        border-color: v.$success-color;
-        color: v.$success-color;
+        border-color: v.$primary-color;
+        color: v.$primary-color;
         
         &:hover {
-          background-color: rgba(v.$success-color, 0.1);
+          background-color: rgba(v.$primary-color, 0.1);
         }
       }
     }
@@ -69,13 +77,14 @@
   margin-bottom: 30px;
   
   .user-profile-section {
-    display: grid;
-    grid-template-columns: auto 1fr auto auto;
+    display: flex;
+    // grid-template-columns: auto 1fr auto auto;
     gap: 30px;
     padding: 30px;
-    border-bottom: 1px solid v.$border-color;
+    // border-bottom: 1px solid v.$border-color;
     
     @include m.responsive(tablet) {
+      display:grid;
       grid-template-columns: 1fr;
       gap: 20px;
       text-align: center;
@@ -108,6 +117,8 @@
     }
     
     .user-name-section {
+      padding: 1rem;
+      // border-right: 1px solid v.$border-color;
       h2 {
         font-size: 22px;
         font-weight: 500;
@@ -122,7 +133,11 @@
     }
     
     .user-tier-section {
+      width: 170px;
       text-align: center;
+      padding: 1rem;
+      border-right: 1px solid v.$border-color;
+      border-left: 1px solid v.$border-color;
       
       p {
         color: v.$text-color;
@@ -135,13 +150,20 @@
         gap: 2px;
         justify-content: center;
       }
+        @include m.responsive(tablet) {
+        width: auto;
+        border: none;
+        
+      }
     }
     
     .user-balance-section {
       text-align: right;
+       padding: 1rem;
       
       @include m.responsive(tablet) {
         text-align: center;
+
       }
       
       h3 {
@@ -160,6 +182,7 @@
   
   .tabs {
     display: flex;
+    justify-content: space-between;
     overflow-x: auto;
     
     @include m.responsive(tablet) {
@@ -205,6 +228,8 @@
   
   .details-section {
     margin-bottom: 30px;
+    padding: 15px 0px;
+    border-bottom: 1px solid v.$border-color;
     
     &:last-child {
       margin-bottom: 0;
@@ -274,4 +299,6 @@
 .error-state {
   color: v.$danger-color;
 }
+
+
 

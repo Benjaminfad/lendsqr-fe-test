@@ -10,6 +10,8 @@ export interface User {
   phoneNumber: string
   dateJoined: string
   status: UserStatus
+  Savings: boolean
+  Loan: boolean
 }
 
 export interface UserDetails {

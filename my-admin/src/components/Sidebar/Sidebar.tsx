@@ -9,16 +9,14 @@ import {
   FileText,
   Briefcase,
   Sliders,
-  Clipboard,
   UserCheck,
   UserX,
-  BarChart2,
-  Settings,
   LogOut,
   ChevronDown,
 } from "react-feather"
 import "./Sidebar.scss"
 import { useAuth } from "../../context/AuthContext"
+import { BadgePercent, ChartBar, ClipboardList, Database, HandCoins, Handshake, Landmark, LoaderPinwheel, PiggyBank, Scroll, UserCog } from "lucide-react"
 
 const Sidebar = () => {
   const [showMobileSidebar, setShowMobileSidebar] = useState(false)
@@ -75,17 +73,17 @@ const Sidebar = () => {
           </NavLink>
 
           <NavLink to="/decision-models" className="sidebar-item">
-            <Briefcase size={16} />
+            <Handshake size={16} />
             <span>Decision Models</span>
           </NavLink>
 
           <NavLink to="/savings" className="sidebar-item">
-            <Briefcase size={16} />
+            <PiggyBank size={18} />
             <span>Savings</span>
           </NavLink>
 
           <NavLink to="/loan-requests" className="sidebar-item">
-            <FileText size={16} />
+            <HandCoins size={16} />
             <span>Loan Requests</span>
           </NavLink>
 
@@ -109,17 +107,17 @@ const Sidebar = () => {
           </NavLink>
 
           <NavLink to="/loan-products" className="sidebar-item">
-            <FileText size={16} />
+            <HandCoins size={16} />
             <span>Loan Products</span>
           </NavLink>
 
           <NavLink to="/savings-products" className="sidebar-item">
-            <Briefcase size={16} />
+            <Landmark size={16} />
             <span>Savings Products</span>
           </NavLink>
 
           <NavLink to="/fees" className="sidebar-item">
-            <Clipboard size={16} />
+            < Database size={16} />
             <span>Fees and Charges</span>
           </NavLink>
 
@@ -134,17 +132,17 @@ const Sidebar = () => {
           </NavLink>
 
           <NavLink to="/service-account" className="sidebar-item">
-            <UserCheck size={16} />
+            <UserCog size={16} />
             <span>Service Account</span>
           </NavLink>
 
           <NavLink to="/settlements" className="sidebar-item">
-            <Clipboard size={16} />
+            <Scroll size={16} />
             <span>Settlements</span>
           </NavLink>
 
           <NavLink to="/reports" className="sidebar-item">
-            <BarChart2 size={16} />
+            <ChartBar size={16} />
             <span>Reports</span>
           </NavLink>
         </div>
@@ -153,18 +151,23 @@ const Sidebar = () => {
           <div className="sidebar-section-title">SETTINGS</div>
 
           <NavLink to="/preferences" className="sidebar-item">
-            <Settings size={16} />
+            <Sliders size={16} />
             <span>Preferences</span>
           </NavLink>
 
           <NavLink to="/fees-pricing" className="sidebar-item">
-            <Clipboard size={16} />
+            <BadgePercent size={16} />
             <span>Fees and Pricing</span>
           </NavLink>
 
           <NavLink to="/audit-logs" className="sidebar-item">
-            <Clipboard size={16} />
+            <ClipboardList size={16} />
             <span>Audit Logs</span>
+          </NavLink>
+
+           <NavLink to="/systems-messages" className="sidebar-item">
+            <LoaderPinwheel size={16} />
+            <span>Systems Messages</span>
           </NavLink>
         </div>
 
