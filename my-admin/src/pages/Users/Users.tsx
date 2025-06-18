@@ -10,6 +10,8 @@ import {
   Eye,
   UserX,
   UserPlus,
+  ChevronRight,
+  ChevronLeft,
 } from "react-feather";
 import StatCard from "../../components/StatsCard/StatCard";
 import { getUsers } from "../../services/user";
@@ -455,7 +457,7 @@ const Users = () => {
               onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
               disabled={currentPage === 1}
             >
-              &lt;
+              <ChevronLeft size={15} color="#213F7D"/>
             </button>
 
             {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
@@ -503,7 +505,7 @@ const Users = () => {
               }
               disabled={currentPage === totalPages}
             >
-              &gt;
+              <ChevronRight size={15} color=" #213F7D" fontWeight={50}/>
             </button>
           </div>
         </div>
