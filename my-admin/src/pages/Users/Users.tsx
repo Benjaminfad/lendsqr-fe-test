@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import {
   Users as UsersIcon,
   FileText,
-  Filter,
   MoreVertical,
   Eye,
   UserX,
@@ -18,7 +17,7 @@ import { getUsers } from "../../services/user";
 import type { User, UserStatus } from "../../types/users";
 import "./Users.scss";
 import Loading from "../../components/Loading/Loading";
-import { Database } from "lucide-react";
+import { Database, ListFilter } from "lucide-react";
 
 const Users = () => {
   const [users, setUsers] = useState<User[]>([]);
@@ -233,7 +232,7 @@ const Users = () => {
                   <div className="th-content">
                     ORGANIZATION
                     <button className="filter-button" onClick={toggleFilter}>
-                      <Filter size={16} />
+                      <ListFilter size={14} strokeWidth={2} />
                     </button>
                   </div>
                 </th>
@@ -241,7 +240,7 @@ const Users = () => {
                   <div className="th-content">
                     USERNAME
                     <button className="filter-button" onClick={toggleFilter}>
-                      <Filter size={16} />
+                      <ListFilter size={14} strokeWidth={2} />
                     </button>
                   </div>
                 </th>
@@ -249,7 +248,7 @@ const Users = () => {
                   <div className="th-content">
                     EMAIL
                     <button className="filter-button" onClick={toggleFilter}>
-                      <Filter size={16} />
+                      <ListFilter size={14} strokeWidth={2} />
                     </button>
                   </div>
                 </th>
@@ -257,7 +256,7 @@ const Users = () => {
                   <div className="th-content">
                     PHONE NUMBER
                     <button className="filter-button" onClick={toggleFilter}>
-                      <Filter size={16} />
+                      <ListFilter size={14} strokeWidth={2} />
                     </button>
                   </div>
                 </th>
@@ -265,7 +264,7 @@ const Users = () => {
                   <div className="th-content">
                     DATE JOINED
                     <button className="filter-button" onClick={toggleFilter}>
-                      <Filter size={16} />
+                      <ListFilter size={14} strokeWidth={2} />
                     </button>
                   </div>
                 </th>
@@ -273,7 +272,7 @@ const Users = () => {
                   <div className="th-content">
                     STATUS
                     <button className="filter-button" onClick={toggleFilter}>
-                      <Filter size={16} />
+                      <ListFilter size={14} strokeWidth={2} />
                     </button>
                   </div>
                 </th>

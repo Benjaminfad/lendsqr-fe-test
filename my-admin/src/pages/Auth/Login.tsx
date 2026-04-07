@@ -5,8 +5,8 @@ import { useAuth } from "../../context/AuthContext"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import './Login.scss'
-import logo from "../../assets/logo.svg"
-import loginImage from "../../assets/login-image.png"
+import logo from "../../assets/Logo.svg"
+import loginImage from "../../assets/Login-Image.png"
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false)

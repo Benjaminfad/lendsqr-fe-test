@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
-import { ArrowLeft, Star } from "react-feather";
+import { ArrowLeft, Star, User } from "react-feather";
 import { getUserById } from "../../services/user";
 import type {
   UserDetails as UserDetailsType,
@@ -131,8 +131,7 @@ const UserDetails = () => {
               />
             ) : (
               <div className="avatar-placeholder">
-                {user.firstName.charAt(0)}
-                {user.lastName.charAt(0)}
+                <User size={32} />
               </div>
             )}
           </div>
@@ -141,7 +140,7 @@ const UserDetails = () => {
             <h2>
               {user.firstName} {user.lastName}
             </h2>
-            <p>{user.accountNumber}</p>
+            <p className="user-account-id">{user.accountNumber}</p>
           </div>
 
           <div className="user-tier-section">
@@ -160,7 +159,9 @@ const UserDetails = () => {
 
           <div className="user-balance-section">
             <h3>{user.balance}</h3>
-            <p>{user.bank}</p>
+            <p>
+              {user.accountNumber}/{user.bank}
+            </p>
           </div>
         </div>
 
