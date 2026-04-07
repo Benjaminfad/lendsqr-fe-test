@@ -4,8 +4,39 @@ import type { User, UserDetails } from "../types/users"
 
 export const getUsers = async (): Promise<User[]> => {
   try {
-    const response = await fetchData<{ status: boolean; data: User[] }>(API_URL.USERS)
-    return response.data || []
+    const response = await fetchData<UserDetails[]>(API_URL.USERS)
+
+    if (!Array.isArray(response)) {
+      return []
+    }
+
+    return response.map(
+      ({
+        id,
+        organization,
+        firstName,
+        lastName,
+        username,
+        email,
+        phoneNumber,
+        dateJoined,
+        status,
+        Savings,
+        Loan,
+      }) => ({
+        id,
+        organization,
+        firstName,
+        lastName,
+        username,
+        email,
+        phoneNumber,
+        dateJoined,
+        status,
+        Savings,
+        Loan,
+      }),
+    )
   } catch (error) {
     console.error("Error fetching users:", error)
     return []
@@ -14,15 +45,8 @@ export const getUsers = async (): Promise<User[]> => {
 
 export const getUserById = async (id: string): Promise<UserDetails | null> => {
   try {
-    // Fetch all user details from the API
-    const response = await fetchData<{ status: boolean; data: UserDetails[] }>(API_URL.USER_DETAILS)
-
-    let user: UserDetails | null = null
-
-    if (response.status && Array.isArray(response.data)) {
-      // If the API returns an array of users, find the one with matching ID
-      user = response.data.find((u) => u.id.toString() === id) || null
-    }
+    const response = await fetchData<UserDetails[]>(API_URL.USERS)
+    const user = Array.isArray(response) ? response.find((item) => item.id.toString() === id) || null : null
 
     if (user) {
       // Store in localStorage for offline access

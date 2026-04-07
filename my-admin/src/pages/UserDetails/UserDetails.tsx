@@ -30,7 +30,6 @@ const UserDetails = () => {
 
         if (cachedUser) {
           setUser(JSON.parse(cachedUser));
-          setLoading(false);
         }
 
         const userData = await getUserById(id);

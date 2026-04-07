@@ -1,8 +1,8 @@
 export type UserStatus = "Active" | "Inactive" | "Pending" | "Blacklisted"
 
 export interface User {
-  email: any
-  username: any
+  email: string
+  username: string
   id: number
   organization: string
   firstName: string
@@ -19,6 +19,7 @@ export interface UserDetails {
   organization: string
   firstName: string
   lastName: string
+  username: string
   avatar?: string
   accountNumber: string
   tier: number
@@ -28,6 +29,9 @@ export interface UserDetails {
   fullName: string
   phoneNumber: string
   email: string
+  dateJoined: string
+  Savings: boolean
+  Loan: boolean
   bvn: number
   gender: string
   maritalStatus: string
