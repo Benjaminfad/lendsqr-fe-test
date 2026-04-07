@@ -20,6 +20,7 @@ import Loading from "../../components/Loading/Loading";
 import { Database, ListFilter } from "lucide-react";
 
 const Users = () => {
+  const FILTER_DELAY_MS = 700;
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -89,7 +90,9 @@ const Users = () => {
     }
   };
 
-  const applyFilters = () => {
+  const applyFilters = async () => {
+    setLoading(true);
+
     let result = [...users];
 
     if (filters.organization) {
@@ -133,9 +136,12 @@ const Users = () => {
       });
     }
 
+    await new Promise((resolve) => setTimeout(resolve, FILTER_DELAY_MS));
+
     setFilteredUsers(result);
     setCurrentPage(1);
     setShowFilter(false);
+    setLoading(false);
   };
 
   const resetFilters = () => {
